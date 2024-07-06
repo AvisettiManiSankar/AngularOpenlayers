@@ -94,6 +94,7 @@ export class AppComponent {
       })
     })
 
+    //Vector Layer
     const indiaGeoJson = new VectorImageLayer({
       source: new Vector({
         url: 'assets/vectors_data/india.geojson',
@@ -110,7 +111,7 @@ export class AppComponent {
 
     map.addLayer(indiaGeoJson)
 
-    // Vector Feature Popup Logic
+    // Vector Interaction Feature Popup Logic
     const overlayContainerElement = document.querySelector('.overlay-container')
     if(overlayContainerElement){
       const overlayLayer = new Overlay({
