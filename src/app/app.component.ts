@@ -6,6 +6,10 @@ import VectorImageLayer from 'ol/layer/VectorImage';
 import { Projection } from 'ol/proj';
 import { OSM, TileWMS, Vector, XYZ } from 'ol/source';
 import GeoJSON from 'ol/format/GeoJSON';
+import Stroke from 'ol/style/Stroke';
+import Fill from 'ol/style/Fill';
+import Circle from 'ol/style/Circle';
+import Style from 'ol/style/Style';
 
 @Component({
   selector: 'app-root',
@@ -65,6 +69,20 @@ export class AppComponent {
     map.addLayer(baseLayerGroup);
 
     // Layer Switcher Logic for Basemaps
+    const fillStyle = new Fill({
+      color: [84, 118, 255, 1]
+    });
+    const strokeStyle =new Stroke({
+      color: [46, 45, 45, 1],
+      width:1.25
+    });
+    const circleStyle = new Circle({
+      fill: new Fill({
+        color: [245, 49, 5, 1]
+      }),
+      radius: 7,
+      stroke: strokeStyle
+    })
     const baseLayerElements = document.querySelectorAll('.sidebar > input[type=radio]');
     baseLayerElements.forEach(element=>{
       element.addEventListener('change', function(){
@@ -80,7 +98,12 @@ export class AppComponent {
         url: 'assets/vectors_data/india.geojson',
         format: new GeoJSON()
       }),
-      visible: true
+      visible: true,
+      style: new Style({
+        fill: fillStyle,
+        stroke: strokeStyle,
+        image: circleStyle
+      })
     })
     indiaGeoJson.set('title', 'indiaCities')
 
