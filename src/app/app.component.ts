@@ -10,6 +10,7 @@ import Stroke from 'ol/style/Stroke';
 import Fill from 'ol/style/Fill';
 import Circle from 'ol/style/Circle';
 import Style from 'ol/style/Style';
+import Overlay from 'ol/Overlay'
 
 @Component({
   selector: 'app-root',
@@ -108,6 +109,37 @@ export class AppComponent {
     indiaGeoJson.set('title', 'indiaCities')
 
     map.addLayer(indiaGeoJson)
+
+    // Vector Feature Popup Logic
+    const overlayContainerElement = document.querySelector('.overlay-container')
+    if(overlayContainerElement){
+      const overlayLayer = new Overlay({
+        element: overlayContainerElement as HTMLElement
+      })
+      map.addOverlay(overlayLayer)
+      const overlayFeatureName = document.getElementById('feature-name')
+      const overlayFeatureCapital = document.getElementById('feature-capital')
+  
+      if (overlayFeatureName && overlayFeatureCapital) {
+        map.on('click', function(e){
+          overlayLayer.setPosition(undefined)
+          map.forEachFeatureAtPixel(e.pixel, function(feature, layer){
+            let clickedCoordinate = e.coordinate;
+            console.log('manimm')
+            let clickedFeatureName = feature.get('name');
+            let clickedFeatureCapital = feature.get('capital');
+            overlayLayer.setPosition(clickedCoordinate);
+            overlayFeatureName.innerHTML = clickedFeatureName;
+            overlayFeatureCapital.innerHTML = clickedFeatureCapital;
+          },
+          {
+            layerFilter: function(layerCandidate){
+              return layerCandidate.get('title') === 'indiaCities'
+            }
+          })
+        })
+      }
+    }
   }
 
   example2(){
