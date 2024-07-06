@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { Map, Tile, View } from 'ol';
 import LayerGroup from 'ol/layer/Group';
 import TileLayer from 'ol/layer/Tile';
+import VectorImageLayer from 'ol/layer/VectorImage';
 import { Projection } from 'ol/proj';
-import { OSM, TileWMS, XYZ } from 'ol/source';
+import { OSM, TileWMS, Vector, XYZ } from 'ol/source';
+import GeoJSON from 'ol/format/GeoJSON';
 
 @Component({
   selector: 'app-root',
@@ -72,6 +74,17 @@ export class AppComponent {
         })
       })
     })
+
+    const indiaGeoJson = new VectorImageLayer({
+      source: new Vector({
+        url: 'assets/vectors_data/india.geojson',
+        format: new GeoJSON()
+      }),
+      visible: true
+    })
+    indiaGeoJson.set('title', 'indiaCities')
+
+    map.addLayer(indiaGeoJson)
   }
 
   example2(){
